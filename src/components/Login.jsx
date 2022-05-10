@@ -1,10 +1,17 @@
 import { Button } from '@mui/material';
+import { signInWithPopup } from 'firebase/auth';
 import React from 'react';
+import { auth, googleProvider } from '../firebase-config';
 
 import './Login.css';
 
 const Login = () => {
-  const signIn = () => {};
+  googleProvider.setCustomParameters({
+    prompt: 'select_account',
+  });
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider);
+  };
   return (
     <div className='login'>
       <div className='login__container'>
@@ -15,7 +22,7 @@ const Login = () => {
         <div className='login__text'>
           <h1>Sign In to Whatsapp</h1>
         </div>
-        <Button onClick={signIn}>Sign In With Google</Button>
+        <Button onClick={signInWithGoogle}>Sign In With Google</Button>
       </div>
     </div>
   );
