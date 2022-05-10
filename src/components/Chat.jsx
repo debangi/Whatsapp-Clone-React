@@ -5,10 +5,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import MicIcon from '@mui/icons-material/Mic';
+import { useParams } from 'react-router';
 
 import './Chat.css';
 
 const Chat = () => {
+  const { roomId } = useParams();
   const [seed, setSeed] = useState('');
   const [input, setInput] = useState('');
 

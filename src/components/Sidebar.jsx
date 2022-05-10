@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase-config';
@@ -11,6 +11,7 @@ import SearchOutlined from '@mui/icons-material/SearchOutlined';
 
 import './Sidebar.css';
 import SidebarChat from './SidebarChat';
+import { Outlet } from 'react-router';
 
 const Sidebar = () => {
   const [rooms, setRooms] = useState([]);
@@ -29,34 +30,37 @@ const Sidebar = () => {
   console.log(rooms);
 
   return (
-    <div className='sidebar'>
-      <div className='sidebar__header'>
-        <Avatar alt='' />
-        <div className='sidebar__headerRight'>
-          <IconButton>
-            <DonutLargeIcon />
-          </IconButton>
-          <IconButton>
-            <ChatIcon />
-          </IconButton>
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
+    <Fragment>
+      <div className='sidebar'>
+        <div className='sidebar__header'>
+          <Avatar alt='' />
+          <div className='sidebar__headerRight'>
+            <IconButton>
+              <DonutLargeIcon />
+            </IconButton>
+            <IconButton>
+              <ChatIcon />
+            </IconButton>
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          </div>
+        </div>
+        <div className='sidebar__search'>
+          <div className='sidebar__searchContainer'>
+            <SearchOutlined />
+            <input placeholder='Search or start a new chat' type='text' />
+          </div>
+        </div>
+        <div className='sidebar__chats'>
+          <SidebarChat addNewChat />
+          {rooms.map((room) => (
+            <SidebarChat key={room.id} id={room.id} name={room.data.name} />
+          ))}
         </div>
       </div>
-      <div className='sidebar__search'>
-        <div className='sidebar__searchContainer'>
-          <SearchOutlined />
-          <input placeholder='Search or start a new chat' type='text' />
-        </div>
-      </div>
-      <div className='sidebar__chats'>
-        <SidebarChat addNewChat />
-        {rooms.map((room) => (
-          <SidebarChat key={room.id} id={room.id} name={room.data.name} />
-        ))}
-      </div>
-    </div>
+      <Outlet />
+    </Fragment>
   );
 };
 
