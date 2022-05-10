@@ -1,7 +1,7 @@
 import { Avatar, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchOutlined from '@mui/icons-material/SearchOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import MicIcon from '@mui/icons-material/Mic';
