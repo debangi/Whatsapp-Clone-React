@@ -3,15 +3,23 @@ import React, { useEffect, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import MicIcon from '@mui/icons-material/Mic';
 
 import './Chat.css';
 
 const Chat = () => {
   const [seed, setSeed] = useState('');
+  const [input, setInput] = useState('');
 
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, []);
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    setInput('');
+  };
 
   return (
     <div className='chat'>
@@ -42,7 +50,21 @@ const Chat = () => {
           <span className='chat__timestamp'>4:78pm</span>
         </p>
       </div>
-      <div className='chat__footer'></div>
+      <div className='chat__footer'>
+        <EmojiEmotionsIcon />
+        <form>
+          <input
+            type='text'
+            placeholder='Type a message...'
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button type='submit' onClick={sendMessage}>
+            Send a message
+          </button>
+        </form>
+        <MicIcon />
+      </div>
     </div>
   );
 };
