@@ -1,5 +1,9 @@
-import { Avatar, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase-config';
+
+import { Avatar, IconButton } from '@mui/material';
 import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -11,12 +15,20 @@ import './Chat.css';
 
 const Chat = () => {
   const { roomId } = useParams();
-  const [seed, setSeed] = useState('');
+  // const [seed, setSeed] = useState('');
   const [input, setInput] = useState('');
+  const [roomName, setRoomName] = useState('');
 
   useEffect(() => {
-    setSeed(Math.floor(Math.random() * 5000));
-  }, []);
+    if (roomId) {
+      const docRef = doc(db, 'rooms', roomId);
+      getDoc(docRef).then((doc) => setRoomName(doc.data().name));
+    }
+  }, [roomId]);
+
+  // useEffect(() => {
+  //   setSeed(Math.floor(Math.random() * 5000));
+  // }, []);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -26,10 +38,10 @@ const Chat = () => {
   return (
     <div className='chat'>
       <div className='chat__header'>
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        <Avatar src={`https://avatars.dicebear.com/api/human/${roomId}.svg`} />
 
         <div className='chat__headerInfo'>
-          <h3>Room Name</h3>
+          <h3>{roomName}</h3>
           <p>Last seen at...</p>
         </div>
 
