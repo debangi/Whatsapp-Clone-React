@@ -3,11 +3,25 @@ import Chat from './components/Chat';
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
 import { Route, Routes } from 'react-router';
-import { useState } from 'react';
+import { useContext, useEffect } from 'react';
 import Login from './components/Login';
+import { StateContext } from './StateProvider';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase-config';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const { user, addCurrentUser, removeCurrentUser } = useContext(StateContext);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        addCurrentUser(currentUser);
+      } else {
+        removeCurrentUser();
+      }
+    });
+    return unsubscribe;
+  }, []);
+  console.log(user);
   return (
     <div className='app'>
       {!user ? (

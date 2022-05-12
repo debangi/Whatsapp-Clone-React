@@ -1,17 +1,23 @@
 import { Button } from '@mui/material';
 import { signInWithPopup } from 'firebase/auth';
-import React from 'react';
+import React, { useContext } from 'react';
 import { auth, googleProvider } from '../firebase-config';
+import { StateContext } from '../StateProvider';
 
 import './Login.css';
 
 const Login = () => {
+  const { user, addCurrentUser, removeCurrentUser } = useContext(StateContext);
+
+  console.log(user);
   googleProvider.setCustomParameters({
     prompt: 'select_account',
   });
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider);
+    addCurrentUser(auth.currentUser);
   };
+
   return (
     <div className='login'>
       <div className='login__container'>

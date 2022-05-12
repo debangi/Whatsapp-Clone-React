@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { initializeFirestore } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getFirestore, initializeFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA3SD1WjvUmqPTa66-fpKz7gmolr2iy0CQ',
@@ -16,8 +16,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const googleProvider = new GoogleAuthProvider();
 
 export const auth = getAuth();
-
-export const db = initializeFirestore(firebaseApp, {
-  experimentalForceLongPolling: true,
-  useFetchStreams: false,
-});
+export const db = getFirestore();
+// export const db = initializeFirestore(firebaseApp, {
+//   experimentalForceLongPolling: true,
+//   useFetchStreams: false,
+// });

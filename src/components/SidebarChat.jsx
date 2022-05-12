@@ -7,8 +7,6 @@ import { db } from '../firebase-config';
 import './SidebarChat.css';
 
 const SidebarChat = ({ id, name, addNewChat }) => {
-  //   const [seed, setSeed] = useState('');
-
   const createChat = async () => {
     const roomName = prompt('Please enter name for chat');
     if (roomName) {

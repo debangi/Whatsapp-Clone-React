@@ -1,6 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { doc, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  Timestamp,
+} from 'firebase/firestore';
 import { db } from '../firebase-config';
 
 import { Avatar, IconButton } from '@mui/material';
@@ -10,31 +19,58 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import MicIcon from '@mui/icons-material/Mic';
 import { useParams } from 'react-router';
+import { StateContext } from '../StateProvider';
 
 import './Chat.css';
 
 const Chat = () => {
+  const { user } = useContext(StateContext);
   const { roomId } = useParams();
-  // const [seed, setSeed] = useState('');
   const [input, setInput] = useState('');
   const [roomName, setRoomName] = useState('');
-
+  const [messages, setMessages] = useState([]);
+  console.log(user.displayName);
   useEffect(() => {
     if (roomId) {
-      const docRef = doc(db, 'rooms', roomId);
-      getDoc(docRef).then((doc) => setRoomName(doc.data().name));
+      const roomRef = doc(db, 'rooms', roomId);
+      getDoc(roomRef).then((doc) => setRoomName(doc.data().name));
+
+      const q = query(
+        collection(db, 'rooms', roomId, 'messages'),
+        orderBy('timestamp', 'desc')
+      );
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        setMessages(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      });
+      return unsubscribe;
     }
   }, [roomId]);
+  console.log(messages);
 
-  // useEffect(() => {
-  //   setSeed(Math.floor(Math.random() * 5000));
-  // }, []);
-
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
+    const messageDocRef = doc(
+      db,
+      'rooms',
+      roomId,
+      'messages',
+      `message${Date.now()}`
+    );
+    const payload = {
+      timestamp: Timestamp.now(),
+      text: input,
+      username: user.displayName,
+    };
+    await setDoc(messageDocRef, payload);
     setInput('');
   };
 
+  // console.log(message);
   return (
     <div className='chat'>
       <div className='chat__header'>
@@ -58,11 +94,20 @@ const Chat = () => {
         </div>
       </div>
       <div className='chat__body'>
-        <p className={`chat__message ${true && 'chat__reciever'}`}>
-          <span className='chat__name'>Debangi</span>
-          hey guys
-          <span className='chat__timestamp'>4:78pm</span>
-        </p>
+        {messages.map((message) => (
+          <p
+            key={message.id}
+            className={`chat__message ${
+              message.data.username === user.displayName && 'chat__reciever'
+            }`}
+          >
+            <span className='chat__name'>{message.data.username}</span>
+            {message.data.text}
+            <span className='chat__timestamp'>
+              {new Date(message.data.timestamp?.toDate()).toUTCString()}
+            </span>
+          </p>
+        ))}
       </div>
       <div className='chat__footer'>
         <EmojiEmotionsIcon />

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase-config';
@@ -12,8 +12,10 @@ import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import './Sidebar.css';
 import SidebarChat from './SidebarChat';
 import { Outlet } from 'react-router';
+import { StateContext } from '../StateProvider';
 
 const Sidebar = () => {
+  const { user } = useContext(StateContext);
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const Sidebar = () => {
     <Fragment>
       <div className='sidebar'>
         <div className='sidebar__header'>
-          <Avatar alt='' />
+          <Avatar src={user?.photoURL} alt='' />
           <div className='sidebar__headerRight'>
             <IconButton>
               <DonutLargeIcon />
