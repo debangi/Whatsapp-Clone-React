@@ -78,7 +78,12 @@ const Chat = () => {
 
         <div className='chat__headerInfo'>
           <h3>{roomName}</h3>
-          <p>Last seen at...</p>
+          <p>
+            Last seen{' '}
+            {new Date(
+              messages[messages.length - 1]?.data.timestamp?.toDate()
+            ).toUTCString() || `...`}
+          </p>
         </div>
 
         <div className='chat__headerRight'>
@@ -104,7 +109,8 @@ const Chat = () => {
             <span className='chat__name'>{message.data.username}</span>
             {message.data.text}
             <span className='chat__timestamp'>
-              {new Date(message.data.timestamp?.toDate()).toUTCString()}
+              {new Date(message.data.timestamp?.toDate()).getUTCMinutes()}:
+              {new Date(message.data.timestamp?.toDate()).getUTCSeconds()}
             </span>
           </p>
         ))}
