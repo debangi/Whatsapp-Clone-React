@@ -1,7 +1,7 @@
 # FB Messenger Clone
  - ReactJs
  - React Context API
- - Firebase Authentication
+ - Google Authentication with Firebase
  - Firebase Firestore
  - Firebase Hosting
  
