@@ -9,7 +9,7 @@ import './Login.css';
 const Login = () => {
   const { user, addCurrentUser, removeCurrentUser } = useContext(StateContext);
 
-  console.log(user);
+  // console.log(user);
   googleProvider.setCustomParameters({
     prompt: 'select_account',
   });

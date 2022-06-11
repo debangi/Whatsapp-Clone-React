@@ -29,7 +29,7 @@ const Chat = () => {
   const [input, setInput] = useState('');
   const [roomName, setRoomName] = useState('');
   const [messages, setMessages] = useState([]);
-  console.log(user.displayName);
+  // console.log(user.displayName);
   useEffect(() => {
     if (roomId) {
       const roomRef = doc(db, 'rooms', roomId);

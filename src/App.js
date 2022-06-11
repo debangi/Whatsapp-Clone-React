@@ -11,6 +11,7 @@ import { auth } from './firebase-config';
 
 function App() {
   const { user, addCurrentUser, removeCurrentUser } = useContext(StateContext);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -21,7 +22,7 @@ function App() {
     });
     return unsubscribe;
   }, []);
-  console.log(user);
+
   return (
     <div className='app'>
       {!user ? (
@@ -30,7 +31,7 @@ function App() {
         <div className='app__body'>
           <Routes>
             <Route path='/' element={<Sidebar />}>
-              <Route index element={<Home />} />
+              {/* <Route index element={<Home />} /> */}
               <Route path='/rooms/:roomId' element={<Chat />} />
             </Route>
           </Routes>
